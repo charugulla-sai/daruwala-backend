@@ -1,6 +1,7 @@
 // Import express
 import express from 'express';
-import dotenv from 'dotenv/config';
+// import dotenv from 'dotenv/config';
+import ProductRouter from './src/freatures/product/product.routes.js';
 
 // Create server
 const server = express();
@@ -9,6 +10,9 @@ const server = express();
 server.get('/', (req, res) => {
   res.send('Welcome to E-commerse application');
 });
+
+// Redirect product related routes to product.routes.js file
+server.use('/api/products', ProductRouter);
 
 // Add listner
 const port = process.env.PORT;
