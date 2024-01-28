@@ -3,11 +3,13 @@ import express from 'express';
 import ProductController from './product.controller.js';
 
 // initialize express router
-const router = express.Router();
+const productRouter = express.Router();
 
+// Create Instance of Product Controller
 const productController = new ProductController();
 
 // routes
-router.get('/', productController.getAllProducts);
+productRouter.get('/', productController.getAllProducts);
+productRouter.get('/filter', productController.filterProducts);
 
-export default router;
+export default productRouter;

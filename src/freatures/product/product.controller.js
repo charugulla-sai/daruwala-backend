@@ -1,6 +1,17 @@
+import ProductModel from './product.model.js';
+
 export default class ProductController {
-  getAllProducts(req,res) {
-    res.send('Hello , this is get all products')
+  getAllProducts(req, res) {
+    const products = ProductModel.get();
+    res.send(products);
+  }
+
+  filterProducts(req, res) {
+    const minValue = req.query.minValue;
+    const maxValue = req.query.maxValue;
+    const category = req.query.category;
+    const result = ProductModel.filter(minValue, maxValue, category);
+    res.send(result);
   }
 
   getOneProduct() {}
