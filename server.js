@@ -2,9 +2,12 @@
 import express from 'express';
 // import dotenv from 'dotenv/config';
 import ProductRouter from './src/freatures/product/product.routes.js';
+import userRouter from './src/freatures/user/user.routes.js';
 
 // Create server
 const server = express();
+
+server.use(express.json());
 
 // Default request handler
 server.get('/', (req, res) => {
@@ -13,6 +16,8 @@ server.get('/', (req, res) => {
 
 // Redirect product related routes to product.routes.js file
 server.use('/api/products', ProductRouter);
+// Redirect user related routes to user.routes.js file
+server.use('/user', userRouter);
 
 // Add listner
 const port = process.env.PORT;
