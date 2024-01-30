@@ -9,12 +9,7 @@ export default class UserModel {
       const user = users.find((user) => {
         return user.email === email && user.password === password;
       });
-      if (!user) {
-        return 'Bad Credentials';
-      }
       return user;
-    } else {
-      return 'Data of Email and Password is must and should';
     }
   }
 }
