@@ -1,6 +1,7 @@
 // import express from express
 import express from 'express';
 import ProductController from './product.controller.js';
+import { jwtAuth } from '../../middlewares/jwt.middleware.js';
 
 // initialize express router
 const productRouter = express.Router();
@@ -10,6 +11,6 @@ const productController = new ProductController();
 
 // routes
 productRouter.get('/', productController.getAllProducts);
-productRouter.get('/filter', productController.filterProducts);
+productRouter.get('/filter',jwtAuth, productController.filterProducts);
 
 export default productRouter;
