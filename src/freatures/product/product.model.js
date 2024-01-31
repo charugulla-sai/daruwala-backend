@@ -12,6 +12,15 @@ export default class ProductModel {
     return products;
   }
 
+  static add(product) {
+    if (!product) {
+      return new Error('Please add a product');
+    }
+    const newProduct = new ProductModel(product);
+    products.push(newProduct);
+    return 'Product added successfully';
+  }
+
   static filter(minValue, maxValue, category) {
     const filteredProducts = products.filter((product) => {
       return (

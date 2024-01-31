@@ -11,6 +11,7 @@ const productController = new ProductController();
 
 // routes
 productRouter.get('/', productController.getAllProducts);
+productRouter.post('/product',productController.addProduct)
 productRouter.get('/filter',jwtAuth, productController.filterProducts);
 
 export default productRouter;
