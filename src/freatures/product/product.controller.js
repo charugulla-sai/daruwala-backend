@@ -2,7 +2,7 @@ import ProductModel from './product.model.js';
 
 export default class ProductController {
   getAllProducts(req, res) {
-    const products = ProductModel.get();
+    const products = ProductModel.getAll();
     res.send(products);
   }
 
@@ -14,9 +14,6 @@ export default class ProductController {
     res.send(result);
   }
 
-  getOneProduct() {}
-
-  // id, name, description, imageURL, category, price, sizes
   addProduct(req, res) {
     const product = {
       id: req.body.id,
@@ -36,5 +33,17 @@ export default class ProductController {
     }
   }
 
-  rateProduct() {}
+  // userId, productId, rating
+  rateProduct(req, res) {
+    const { userId, productId, rating } = req.query;
+    // below rateProduct function will return something only if there is some error.
+    const error = ProductModel.rateProduct(userId, productId, rating);
+    if (error) {
+      res.status(400).send(error);
+    } else {
+      res.status(200).send('Rated successfully');
+    }
+  }
+
+  getOneProduct() {}
 }

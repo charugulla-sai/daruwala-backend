@@ -1,7 +1,7 @@
 // import express from express
 import express from 'express';
 import ProductController from './product.controller.js';
-import { jwtAuth } from '../../middlewares/jwt.middleware.js';
+import { isCustomer, isSeller } from '../../middlewares/jwt.middleware.js';
 
 // initialize express router
 const productRouter = express.Router();
@@ -11,7 +11,8 @@ const productController = new ProductController();
 
 // routes
 productRouter.get('/', productController.getAllProducts);
-productRouter.post('/product',productController.addProduct)
-productRouter.get('/filter',jwtAuth, productController.filterProducts);
+productRouter.post('/addproduct', isSeller, productController.addProduct);
+productRouter.post('/rateproduct', isCustomer, productController.rateProduct);
+productRouter.get('/filter', productController.filterProducts);
 
 export default productRouter;

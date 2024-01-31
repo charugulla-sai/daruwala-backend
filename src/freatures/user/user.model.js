@@ -1,13 +1,23 @@
 export default class UserModel {
-  constructor(email, password) {
+  constructor(id, email, password, type) {
+    this.id = id;
     this.email = email;
     this.password = password;
+    this.type = type;
   }
 
-  static signIn(email, password) {
-    if (email && password) {
+static getAll(){
+  return users
+}
+
+  static getUser(email, password, type) {
+    if (email && password && type) {
       const user = users.find((user) => {
-        return user.email === email && user.password === password;
+        return (
+          user.email === email &&
+          user.password === password &&
+          user.type === type
+        );
       });
       return user;
     }
@@ -15,6 +25,6 @@ export default class UserModel {
 }
 
 let users = [
-  new UserModel('satya@gmail.com', '1234'),
-  new UserModel('sai@gmial.com', '2715'),
+  new UserModel(1, 'seller@gmail.com', '1234', 'Seller'),
+  new UserModel(2, 'customer@gmail.com', '2715', 'Customer'),
 ];
