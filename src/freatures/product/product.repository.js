@@ -70,4 +70,41 @@ export default class ProductRepository {
       console.log(err);
     }
   }
+
+  async rateProduct(productId, userId, productRating) {
+    try {
+      // 1. get the db
+      const db = getDB();
+      // 2. get he collection
+      const collection = db.collection(this.collection);
+      // 3. Check if user already rated the product
+      const productWithMyUserRating = await collection.findOne({
+        _id: new ObjectId(productId),
+        ratings: { $elemMatch: { userId: new ObjectId(userId) } },
+      });
+
+      if (!productWithMyUserRating) {
+        // 4. if user not rated earlier, add the rating object to ratings array in the product
+        const updatedProduct = await collection.updateOne(
+          { _id: new ObjectId(productId) },
+          {
+            $push: {
+              ratings: { userId: new ObjectId(userId), rating: productRating },
+            },
+          }
+        );
+        return updatedProduct;
+      }
+      // 5. if user already rated earlier, update the rating object in the ratings array
+      return await collection.updateOne(
+        {
+          _id: new ObjectId(productId),
+          'ratings.userId': new ObjectId(userId),
+        },
+        { $set: { 'ratings.$.rating': productRating } }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }

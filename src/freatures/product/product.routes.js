@@ -13,7 +13,7 @@ const productController = new ProductController();
 productRouter.get('/', productController.getAllProducts);
 productRouter.get('/filter', productController.filterProducts);
 productRouter.post('/addproduct', isSeller, productController.addProduct);
-productRouter.post('/rateproduct', isCustomer, productController.rateProduct);
+productRouter.post('/rateproduct/:id', isCustomer, productController.rateProduct);
 productRouter.get('/:id', productController.getOneProduct);
 
 export default productRouter;

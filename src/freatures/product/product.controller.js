@@ -11,7 +11,11 @@ export default class ProductController {
   async filterProducts(req, res) {
     const { minValue, maxValue, category } = req.query;
     const productRepository = new ProductRepository();
-    const products =await productRepository.filter(minValue, maxValue, category);
+    const products = await productRepository.filter(
+      minValue,
+      maxValue,
+      category
+    );
     res.status(200).send(products);
   }
 
@@ -37,16 +41,16 @@ export default class ProductController {
     });
   }
 
-  
-  rateProduct(req, res) {
-    const { userId, productId, rating } = req.query;
-    // below rateProduct function will return something only if there is some error.
-    const error = ProductModel.rateProduct(userId, productId, rating);
-    if (error) {
-      res.status(400).send(error);
-    } else {
-      res.status(200).send('Rated successfully');
+  async rateProduct(req, res) {
+    const productId = req.params.id;
+    const productRating = req.query.rating;
+    const userId = res.locals.tokenPayload.id;
+    const productRepository = new ProductRepository();
+    const result = await productRepository.rateProduct(productId, userId, productRating);
+    if (!result) {
+      return res.status(400).send('error occured');
     }
+    return res.status(200).send(result);
   }
 
   async getOneProduct(req, res) {

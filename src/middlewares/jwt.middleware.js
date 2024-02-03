@@ -35,6 +35,7 @@ export const isCustomer = (req, res, next) => {
     if (tokenPayload.type !== 'Customer') {
       return res.status(401).send('This user dont have access for this API');
     }
+    res.locals.tokenPayload = tokenPayload;
     next();
   } catch (err) {
     return res.status(401).send(err);

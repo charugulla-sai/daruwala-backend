@@ -8,6 +8,7 @@ export default class ProductModel {
     this.category = category;
     this.price = price;
     this.sizes = sizes;
+    this.ratings = []
   }
 
   static rateProduct(userId, productId, rating) {
