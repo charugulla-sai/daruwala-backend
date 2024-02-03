@@ -50,5 +50,13 @@ export default class ProductController {
     }
   }
 
-  getOneProduct() {}
+  async getOneProduct(req, res) {
+    const productId = req.params.id;
+    const productRepository = new ProductRepository();
+    const product = await productRepository.get(productId);
+    if (!product) {
+      return res.status(404).send({ error: 'Product not found.' });
+    }
+    return res.status(200).send(product);
+  }
 }
