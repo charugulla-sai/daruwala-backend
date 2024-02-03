@@ -1,9 +1,11 @@
 import ProductModel from './product.model.js';
+import ProductRepository from './product.repository.js';
 
 export default class ProductController {
-  getAllProducts(req, res) {
-    const products = ProductModel.getAll();
-    res.send(products);
+  async getAllProducts(req, res) {
+    const productRepository = new ProductRepository();
+    const products = await productRepository.getAll();
+    res.status(200).send(products);
   }
 
   filterProducts(req, res) {
@@ -14,23 +16,26 @@ export default class ProductController {
     res.send(result);
   }
 
-  addProduct(req, res) {
-    const product = {
-      id: req.body.id,
-      name: req.body.name,
-      description: req.body.description,
-      imageURL: req.body.imageURL,
-      category: req.body.category,
-      price: req.body.price,
-      sizes: req.body.sizes,
-    };
-
-    try {
-      const result = ProductModel.add(product);
-      res.status(200).send(result);
-    } catch (err) {
-      res.status(400).send(err);
+  async addProduct(req, res) {
+    const productRepository = new ProductRepository();
+    const { title, description, imageURL, category, price, sizes } = req.body;
+    const newProduct = new ProductModel(
+      title,
+      description,
+      imageURL,
+      category,
+      price,
+      sizes
+    );
+    const result = await productRepository.add(newProduct);
+    if (!result) {
+      return res.status(400).send('Adding product unsucessful');
     }
+    return res.status(201).send({
+      product: newProduct,
+      productId: result.insertedId,
+      message: 'Product added successfully',
+    });
   }
 
   // userId, productId, rating
