@@ -9,14 +9,21 @@ export default class UserRepository {
   async addUser(newUser) {
     try {
       // 1. get the database
-      const db = getDB();
+      const db = getDB() ;
       // 2. get the collection
       const collection = db.collection(this.collection);
+      // 3. very the user if the email already exists
+      const existedUser = await collection.findOne({ email: newUser.email });
+      if (existedUser) {
+        throw new Error(
+          'User exists with this email. Please use diffrent email.'
+        );
+      }
 
-      // 3. Insert the new user into db
+      // 4. Insert the new user into db
       return await collection.insertOne(newUser);
     } catch (err) {
-      console.log(err);
+      throw new Error(err.message)
     }
   }
 

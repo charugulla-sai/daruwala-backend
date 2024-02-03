@@ -5,13 +5,14 @@ import UserRepository from './user.repository.js';
 const userRepository = new UserRepository();
 export default class UserController {
   async signUp(req, res) {
-    const { name, email, password, type } = req.body;
-    const user = new UserModel(name, email, password, type);
-    const result = await userRepository.addUser(user);
-    if (!result) {
-      throw new Error('User not added to Database');
+    try {
+      const { name, email, password, type } = req.body;
+      const user = new UserModel(name, email, password, type);
+      const result = await userRepository.addUser(user);
+      res.status(201).send({ user, userId: result.insertedId });
+    } catch (err) {
+      res.status(400).send(err.message);
     }
-    res.status(201).send(result);
   }
 
   async signIn(req, res) {
