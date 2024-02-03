@@ -11,9 +11,9 @@ const productController = new ProductController();
 
 // routes
 productRouter.get('/', productController.getAllProducts);
-productRouter.get('/:id', productController.getOneProduct);
+productRouter.get('/filter', productController.filterProducts);
 productRouter.post('/addproduct', isSeller, productController.addProduct);
 productRouter.post('/rateproduct', isCustomer, productController.rateProduct);
-productRouter.get('/filter', productController.filterProducts);
+productRouter.get('/:id', productController.getOneProduct);
 
 export default productRouter;

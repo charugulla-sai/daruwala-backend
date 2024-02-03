@@ -8,12 +8,11 @@ export default class ProductController {
     res.status(200).send(products);
   }
 
-  filterProducts(req, res) {
-    const minValue = req.query.minValue;
-    const maxValue = req.query.maxValue;
-    const category = req.query.category;
-    const result = ProductModel.filter(minValue, maxValue, category);
-    res.send(result);
+  async filterProducts(req, res) {
+    const { minValue, maxValue, category } = req.query;
+    const productRepository = new ProductRepository();
+    const products =await productRepository.filter(minValue, maxValue, category);
+    res.status(200).send(products);
   }
 
   async addProduct(req, res) {
@@ -38,7 +37,7 @@ export default class ProductController {
     });
   }
 
-  // userId, productId, rating
+  
   rateProduct(req, res) {
     const { userId, productId, rating } = req.query;
     // below rateProduct function will return something only if there is some error.
