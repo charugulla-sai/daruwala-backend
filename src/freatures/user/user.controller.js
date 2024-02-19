@@ -2,7 +2,6 @@ import UserModel from './user.model.js';
 import jwt from 'jsonwebtoken';
 import UserRepository from './user.repository.js';
 
-const userRepository = new UserRepository();
 export default class UserController {
   async signUp(req, res) {
     try {
