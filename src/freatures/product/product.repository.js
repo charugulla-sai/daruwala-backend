@@ -1,5 +1,9 @@
-import { ObjectId } from 'mongodb';
-import { getDB } from '../../config/mongodb.js';
+// import { ObjectId } from 'mongodb';
+// import { getDB } from '../../config/mongodb.js';
+import mongoose from 'mongoose';
+import { productSchema } from './product.schema.js';
+
+const productModel = mongoose.model('Product', productSchema);
 
 export default class ProductRepository {
   constructor() {
@@ -36,12 +40,10 @@ export default class ProductRepository {
 
   async add(product) {
     try {
-      // 1. get the db
-      const db = getDB();
-      // 2. get the collection
-      const collection = db.collection(this.collection);
-      // 3. add the product to db and return the product
-      return await collection.insertOne(product);
+      if(!product){
+        throw new Error('Product is not received to store')
+      }
+      return await product.save();
     } catch (err) {
       console.log(err);
     }

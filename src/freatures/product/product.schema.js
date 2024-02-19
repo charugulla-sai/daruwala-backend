@@ -1,10 +1,30 @@
 import mongoose from 'mongoose';
 
-const productSchema = new mongoose.Schema({
+export const productSchema = new mongoose.Schema({
   title: {
     type: String,
   },
-  description: {
+  shortDescription: {
     type: String,
+  },
+  longDescription: {
+    type: String,
+  },
+  price: {
+    type: Number,
+  },
+  category: {
+    type: String,
+  },
+  stock: {
+    type: Number,
+    min: 0,
+  },
+  imageUrl: {
+    type: String,
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now,
   },
 });

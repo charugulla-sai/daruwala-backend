@@ -1,42 +1,43 @@
-import { getDB } from '../../config/mongodb.js';
-import UserModel from './user.model.js';
+import mongoose from 'mongoose';
+import { userSchema } from './user.schema.js';
+
+// create user model
+const UserModel = mongoose.model('User', userSchema);
 
 export default class UserRepository {
-  constructor() {
-    this.collection = 'users';
-  }
-
   async addUser(newUser) {
     try {
-      // 1. get the database
-      const db = getDB() ;
-      // 2. get the collection
-      const collection = db.collection(this.collection);
-      // 3. very the user if the email already exists
-      const existedUser = await collection.findOne({ email: newUser.email });
+      if (!newUser) {
+        throw new Error('Something wrong with DB. User data not received.');
+      }
+      // 1. check if user already exists
+      const existedUser = await UserModel.findOne({ email: newUser.email });
       if (existedUser) {
         throw new Error(
-          'User exists with this email. Please use diffrent email.'
+          'User with this email already Exists. Please try with different email.'
         );
       }
-
-      // 4. Insert the new user into db
-      return await collection.insertOne(newUser);
+      // 2. Add user into Database
+      const user = new UserModel(newUser);
+      return await user.save();
     } catch (err) {
-      throw new Error(err.message)
+      throw new Error(err.message);
     }
   }
 
   async getUser(email, password) {
     try {
-      // 1. get the database
-      const db = getDB();
-      // 2. get collection
-      const collection = db.collection(this.collection);
-      // 3. find the user by email and password
-      return await collection.findOne({ email: email, password: password });
+      const user = await UserModel.findOne({
+        email: email,
+        password: password,
+      });
+      if (!user) {
+        throw new Error('Invalid User Credentials.');
+      }
+      return user;
     } catch (err) {
-      console.log(err);
+      console.log('hi');
+      throw new Error(err.message);
     }
   }
 }
