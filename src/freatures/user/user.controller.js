@@ -6,9 +6,9 @@ const userRepository = new UserRepository();
 
 export default class UserController {
   async signUp(req, res) {
+    const { name, email, password, type } = req.body;
+    const user = new UserModel(name, email, password, type);
     try {
-      const { name, email, password, type } = req.body;
-      const user = new UserModel(name, email, password, type);
       const result = await userRepository.addUser(user);
       res.status(201).send({ user, userId: result.insertedId });
     } catch (err) {

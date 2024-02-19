@@ -3,49 +3,36 @@
 import mongoose from 'mongoose';
 import { productSchema } from './product.schema.js';
 
-const productModel = mongoose.model('Product', productSchema);
+const ProductModel = mongoose.model('Product', productSchema);
 
 export default class ProductRepository {
-  constructor() {
-    this.collection = 'products';
-  }
-  async getAll() {
+  async add(product) {
     try {
-      // 1. get the db
-      const db = getDB();
-      // 2. get the collection
-      const collection = db.collection(this.collection);
-      // 3. get and return all the products from the db
-      return await collection.find({}).toArray();
+      if (!product) {
+        throw new Error('Product is not received to store in DB.');
+      }
+      const newProduct = new ProductModel(product);
+      return await newProduct.save();
     } catch (err) {
-      console.log(err);
+      throw new Error(err.message);
     }
   }
 
+  async getAll() {
+    try {
+      return await ProductModel.find({});
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  }
   async get(productId) {
     try {
-      // 1. get the db
-      const db = getDB();
-      // 2. get the collection
-      const collection = db.collection(this.collection);
-      //  3. fetch product from db using product id
-      const product = await collection.findOne({
-        _id: new ObjectId(productId),
+      const product = await ProductModel.findById({
+        _id: new mongoose.Types.ObjectId(productId),
       });
       return product;
     } catch (err) {
-      console.log(err);
-    }
-  }
-
-  async add(product) {
-    try {
-      if(!product){
-        throw new Error('Product is not received to store')
-      }
-      return await product.save();
-    } catch (err) {
-      console.log(err);
+      throw new Error(err.message);
     }
   }
 
@@ -61,15 +48,10 @@ export default class ProductRepository {
       query.category = category;
     }
     try {
-      // 1. get the db
-      const db = getDB();
-      // 2. get the collection
-      const collection = db.collection(this.collection);
-      // 3. apply filter and fetch the products from db
-      const filteredProducts = await collection.find(query).toArray();
+      const filteredProducts = await ProductModel.find(query);
       return filteredProducts;
     } catch (err) {
-      console.log(err);
+      throw new Error(err.message);
     }
   }
 

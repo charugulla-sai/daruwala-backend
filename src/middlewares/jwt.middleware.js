@@ -17,7 +17,7 @@ export const isSeller = (req, res, next) => {
     }
     next();
   } catch (err) {
-    return res.status(401).send(err);
+    return res.status(401).send(err.message);
   }
 };
 export const isCustomer = (req, res, next) => {
@@ -38,6 +38,6 @@ export const isCustomer = (req, res, next) => {
     res.locals.tokenPayload = tokenPayload;
     next();
   } catch (err) {
-    return res.status(401).send(err);
+    return res.status(401).send(err.message);
   }
 };
