@@ -59,17 +59,19 @@ export default class ProductController {
   }
 
   async rateProduct(req, res) {
-    const productId = req.params.id;
-    const productRating = req.query.rating;
-    const userId = res.locals.tokenPayload.id;
-    const result = await productRepository.rateProduct(
-      productId,
-      userId,
-      productRating
-    );
-    if (!result) {
-      return res.status(400).send('error occured');
+    try {
+      const { productId, rating, review } = req.body;
+      const userId = res.locals.tokenPayload.id;
+      const result = await productRepository.rateProduct(
+        productId,
+        userId,
+        rating,
+        review
+      );
+      return res.status(200).send(result);
+    } catch (err) {
+      console.log(err.message);
+      res.status(400).send(err.message);
     }
-    return res.status(200).send(result);
   }
 }

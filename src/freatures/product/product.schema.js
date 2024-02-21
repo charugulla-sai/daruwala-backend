@@ -31,4 +31,8 @@ export const productSchema = new mongoose.Schema({
     required: true,
     default: Date.now,
   },
+  reviews: {
+    type: Array,
+    ref: 'Review',
+  },
 });

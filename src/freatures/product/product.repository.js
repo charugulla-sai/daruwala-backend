@@ -2,8 +2,10 @@
 // import { getDB } from '../../config/mongodb.js';
 import mongoose from 'mongoose';
 import { productSchema } from './product.schema.js';
+import { reviewSchema } from './review.schema.js';
 
 const ProductModel = mongoose.model('Product', productSchema);
+const ReviewModel = mongoose.model('Review', reviewSchema);
 
 export default class ProductRepository {
   async add(product) {
@@ -55,40 +57,48 @@ export default class ProductRepository {
     }
   }
 
-  async rateProduct(productId, userId, productRating) {
+  async rateProduct(productId, userId, productRating, review) {
     try {
-      // 1. get the db
-      const db = getDB();
-      // 2. get he collection
-      const collection = db.collection(this.collection);
-      // 3. Check if user already rated the product
-      const productWithMyUserRating = await collection.findOne({
-        _id: new ObjectId(productId),
-        ratings: { $elemMatch: { userId: new ObjectId(userId) } },
+      // 1. check if product exists
+      const existingProduct = await ProductModel.findById(productId);
+      if (!existingProduct) {
+        throw new Error('Product not found');
+      }
+      // 2. check if user already rated the product
+      const userReview = await ReviewModel.findOne({
+        productId: new mongoose.Types.ObjectId(productId),
+        userId: new mongoose.Types.ObjectId(userId),
       });
 
-      if (!productWithMyUserRating) {
-        // 4. if user not rated earlier, add the rating object to ratings array in the product
-        const updatedProduct = await collection.updateOne(
-          { _id: new ObjectId(productId) },
-          {
-            $push: {
-              ratings: { userId: new ObjectId(userId), rating: productRating },
-            },
-          }
-        );
-        return updatedProduct;
+      if (!userReview) {
+        const newReview = new ReviewModel({
+          productId: new mongoose.Types.ObjectId(productId),
+          userId: new mongoose.Types.ObjectId(userId),
+          rating: productRating,
+          review: review,
+        });
+        await newReview.save();
+      } else {
+        userReview.rating = productRating;
+        userReview.review = review;
+        await userReview.save();
       }
-      // 5. if user already rated earlier, update the rating object in the ratings array
-      return await collection.updateOne(
+      // OPTIONAL
+      // 3. get all the reviews of that product and update in the review field of product
+      const allProductReviews = await ReviewModel.find({
+        productId: new mongoose.Types.ObjectId(productId),
+      });
+
+      await ProductModel.updateOne(
+        { _id: new mongoose.Types.ObjectId(productId) },
         {
-          _id: new ObjectId(productId),
-          'ratings.userId': new ObjectId(userId),
-        },
-        { $set: { 'ratings.$.rating': productRating } }
+          $set: { reviews: [...allProductReviews] },
+        }
       );
+      return await ProductModel.findById(productId);
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
+      throw new Error(err.message);
     }
   }
 }

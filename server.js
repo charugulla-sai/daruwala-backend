@@ -3,10 +3,12 @@ import express from 'express';
 import ProductRouter from './src/freatures/product/product.routes.js';
 import userRouter from './src/freatures/user/user.routes.js';
 import { connectUsingMongoose } from './src/config/mongoose.config.js';
+import cors from 'cors';
 
 // Create server
 const server = express();
 
+server.use(cors());
 server.use(express.json());
 
 // Default request handler
