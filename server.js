@@ -17,8 +17,8 @@ server.get('/', (req, res) => {
 });
 
 // Redirect product related routes to product.routes.js file
-server.use('/api/products', (req,res)=>{
-  ProductRouter(req,res)
+server.use('/api/products', (req, res) => {
+  res.send('get all products');
 });
 // Redirect user related routes to user.routes.js file
 server.use('/user', userRouter);
