@@ -1,6 +1,6 @@
 import { MongoClient } from 'mongodb';
 
-const url = 'mongodb://127.0.0.1:27017/ecomDB';
+const url = 'mongodb+srv://charugullasai:<password>@cluster0.pozjhoe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
 let client;
 export const connectToMongoDB = () => {

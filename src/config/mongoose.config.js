@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv/config';
 
-const url = 'mongodb://127.0.0.1:27017/daruwala';
+const url = `mongodb+srv://charugullasai:${process.env.ATLAS_PASSWORD}@cluster0.pozjhoe.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 export const connectUsingMongoose = async () => {
   try {
