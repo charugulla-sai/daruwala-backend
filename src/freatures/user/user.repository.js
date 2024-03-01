@@ -36,6 +36,7 @@ export default class UserRepository {
       }
       return user;
     } catch (err) {
+      console.log('hi');
       throw new Error(err.message);
     }
   }
