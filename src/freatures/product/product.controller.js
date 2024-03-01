@@ -27,7 +27,6 @@ export default class ProductController {
   }
 
   async getAllProducts(req, res) {
-    return res.send('All controller products');
     const products = await productRepository.getAll();
     res.status(200).send(products);
   }

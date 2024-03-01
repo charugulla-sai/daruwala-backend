@@ -10,7 +10,7 @@ const productRouter = express.Router();
 const productController = new ProductController();
 
 // routes
-productRouter.get('/', productController.getAllProducts);
+productRouter.get('/', productController.getAllProducts);sdfsa
 productRouter.get('/filter', productController.filterProducts);
 productRouter.post('/addproduct', isSeller, productController.addProduct);
 productRouter.post('/rateproduct', isCustomer, productController.rateProduct);
