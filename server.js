@@ -4,6 +4,7 @@ import ProductRouter from './src/freatures/product/product.routes.js';
 import userRouter from './src/freatures/user/user.routes.js';
 import { connectUsingMongoose } from './src/config/mongoose.config.js';
 import cors from 'cors';
+import cartRouter from './src/freatures/cart/cart.routes.js';
 
 // Create server
 const server = express();
@@ -22,6 +23,8 @@ server.use('/api/products', (req, res) => {
 });
 // Redirect user related routes to user.routes.js file
 server.use('/user', userRouter);
+// Redirect cart related routes to cart.routes.js file
+server.use('/api/cart', cartRouter);
 
 // Add listner
 const port = process.env.PORT;
