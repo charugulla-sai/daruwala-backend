@@ -9,5 +9,6 @@ const cartController = new CartController();
 
 // Routes
 cartRouter.post('/:productId', isCustomer, cartController.addToCart);
+cartRouter.delete('/:productId', isCustomer, cartController.deleteFromCart);
 
 export default cartRouter;

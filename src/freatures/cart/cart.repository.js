@@ -36,4 +36,33 @@ export default class CartRepository {
       throw new Error(err.message);
     }
   }
+
+  async delete(productId, userId) {
+    try {
+      // check if product available in product collection
+      const existingProduct = await ProductModel.findById(
+        new mongoose.Types.ObjectId(productId)
+      );
+      if (!existingProduct) {
+        throw new Error('Product not found');
+      }
+      // Check if user already added the product to cart.
+      const productExistInCart = await CartModel.findOne({
+        productId: new mongoose.Types.ObjectId(productId),
+        userId: new mongoose.Types.ObjectId(userId),
+      });
+
+      if (!productExistInCart) {
+        throw new Error(
+          'Product is not yet added in Cart. \n Please add it now.'
+        );
+      }
+
+      return await CartModel.deleteOne({
+        _id: new mongoose.Types.ObjectId(productExistInCart._id),
+      });
+    } catch (err) {
+      return new Error(err.message);
+    }
+  }
 }

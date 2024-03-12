@@ -16,4 +16,15 @@ export default class CartController {
       res.status(400).send(err.message);
     }
   }
+
+  async deleteFromCart(req,res){
+    try {
+      const productId = req.params.productId;
+      const userId = res.locals.tokenPayload.id;
+      const response = await cartRepository.delete(productId, userId)
+      res.status(200).send(response)
+    } catch (err) {
+      res.status(400).send(err.message)
+    }
+  }
 }
