@@ -6,6 +6,14 @@ const CartModel = mongoose.model('Cart', cartSchema);
 const ProductModel = mongoose.model('Product', productSchema);
 
 export default class CartRepository {
+  async getAll() {
+    try {
+      return await CartModel.find({});
+    } catch (err) {
+      return new Error(err.message);
+    }
+  }
+
   async add(cartProduct) {
     try {
       // check if product available in product collection
