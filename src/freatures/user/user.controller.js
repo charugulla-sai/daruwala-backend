@@ -24,7 +24,7 @@ export default class UserController {
       const token = jwt.sign(
         { id: user._id, email: user.email, type: user.type },
         'PO79tkUO6ScSMO4uIH75zlfv6Oeb3n57',
-        { expiresIn: '1hr' }
+        { expiresIn: '24h' }
       );
       // send the token to client when he tries to login with correct credentials
       return res.status(200).send({ access_token: token });
