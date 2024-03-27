@@ -9,7 +9,7 @@ const cartController = new CartController();
 
 // Routes
 cartRouter.get('/', isCustomer, cartController.getAllCartItems);
-cartRouter.post('/:productId', isCustomer, cartController.addToCart);
+cartRouter.post('/', isCustomer, cartController.addToCart);
 cartRouter.delete('/:productId', isCustomer, cartController.deleteFromCart);
 
 export default cartRouter;

@@ -14,7 +14,7 @@ export default class CartController {
   }
   async addToCart(req, res) {
     try {
-      const productId = req.params.productId;
+      const productId = req.body.productId;
       const userId = res.locals.tokenPayload.id;
       const cartProduct = new cartModel(productId, userId);
       const response = await cartRepository.add(cartProduct);

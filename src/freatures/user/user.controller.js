@@ -27,7 +27,7 @@ export default class UserController {
         { expiresIn: '1hr' }
       );
       // send the token to client when he tries to login with correct credentials
-      return res.status(200).send(token);
+      return res.status(200).send({ access_token: token });
     } catch (err) {
       res.status(400).send(err.message);
     }
