@@ -81,7 +81,7 @@ export default class CartRepository {
         _id: new mongoose.Types.ObjectId(productExistInCart._id),
       });
     } catch (err) {
-      return new Error(err.message);
+      throw new Error(err.message);
     }
   }
 }
