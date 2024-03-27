@@ -5,8 +5,9 @@ const cartRepository = new CartRepository();
 
 export default class CartController {
   async getAllCartItems(req, res) {
+    const userId = res.locals.tokenPayload.id;
     try {
-      const allCartProducts = await cartRepository.getAll();
+      const allCartProducts = await cartRepository.getAll(userId);
      return res.status(200).send(allCartProducts);
     } catch (err) {
       res.status(400).send(err.message);
