@@ -8,7 +8,18 @@ const ProductModel = mongoose.model('Product', productSchema);
 export default class CartRepository {
   async getAll() {
     try {
-      return await CartModel.find({});
+      const cartItems = await CartModel.find({});
+      const productIds = cartItems.map((cartItem) => cartItem.productId);
+      const productsInCart = await ProductModel.find({
+        _id: { $in: productIds },
+      });
+      const cartProducts = cartItems.map((cartItem) => {
+        const product = productsInCart.find(
+          (product) => cartItem.productId.equals(product._id)
+        );
+        return { ...product.toObject(), quantity: cartItem.quantity };
+      });
+      return cartProducts;
     } catch (err) {
       return new Error(err.message);
     }
