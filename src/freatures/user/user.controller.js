@@ -12,7 +12,7 @@ export default class UserController {
       const result = await userRepository.addUser(user);
       res.status(201).send({ user, userId: result.insertedId });
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(400).send({err: err.message});
     }
   }
 
@@ -29,7 +29,7 @@ export default class UserController {
       // send the token to client when he tries to login with correct credentials
       return res.status(200).send({ access_token: token });
     } catch (err) {
-      res.status(400).send(err.message);
+      res.status(400).send({err: err.message});
     }
   }
 }
