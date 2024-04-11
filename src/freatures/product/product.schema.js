@@ -22,6 +22,10 @@ export const productSchema = new mongoose.Schema({
     required: true,
     min: 0,
   },
+  size:{
+    type: String,
+    required: true
+  },
   imageUrl: {
     type: String,
     required: true,

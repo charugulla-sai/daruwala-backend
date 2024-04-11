@@ -5,14 +5,15 @@ const productRepository = new ProductRepository();
 
 export default class ProductController {
   async addProduct(req, res) {
-    const { title, description, imageUrl, category, price, stock } = req.body;
+    const { title, description, imageUrl, category, price, stock, size } = req.body;
     const newProduct = new ProductModel(
       title,
       description,
       imageUrl,
       category,
       price,
-      stock
+      stock,
+      size
     );
     try {
       const addedProduct = await productRepository.add(newProduct);
