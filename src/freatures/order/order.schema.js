@@ -17,4 +17,13 @@ export const orderSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
+  orderDate: {
+    type: Date,
+    required: true,
+    default: Date.now,
+  },
+  orderAmount: {
+    type: Number,
+    required: true,
+  },
 });

@@ -23,7 +23,7 @@ export default class OrderController {
   }
 
   async validateOrder(req, res) {
-    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature,amount } =
       req.body;
     const userId = res.locals.tokenPayload.id;
     try {
@@ -48,6 +48,7 @@ export default class OrderController {
           paymentId: razorpay_payment_id,
           products: cartProducts,
           userId: userId,
+          orderAmount: amount,
         });
         res.status(200).send({ message: 'Payment succesfull...!' });
       } else {
