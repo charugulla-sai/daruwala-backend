@@ -46,12 +46,13 @@ export default class ProductController {
   }
 
   async filterProducts(req, res) {
-    const { minValue, maxValue, category } = req.query;
+    const { minValue, maxValue, category, title } = req.query;
     try {
       const products = await productRepository.filter(
         minValue,
         maxValue,
-        category
+        category,
+        title
       );
       res.status(200).send(products);
     } catch (err) {

@@ -1,17 +1,17 @@
 // import { ObjectId } from 'mongodb';
 // import { getDB } from '../../config/mongodb.js';
-import mongoose from 'mongoose';
-import { productSchema } from './product.schema.js';
-import { reviewSchema } from './review.schema.js';
+import mongoose from "mongoose";
+import { productSchema } from "./product.schema.js";
+import { reviewSchema } from "./review.schema.js";
 
-const ProductModel = mongoose.model('Product', productSchema);
-const ReviewModel = mongoose.model('Review', reviewSchema);
+const ProductModel = mongoose.model("Product", productSchema);
+const ReviewModel = mongoose.model("Review", reviewSchema);
 
 export default class ProductRepository {
   async add(product) {
     try {
       if (!product) {
-        throw new Error('Product is not received to store in DB.');
+        throw new Error("Product is not received to store in DB.");
       }
       const newProduct = new ProductModel(product);
       return await newProduct.save();
@@ -38,13 +38,16 @@ export default class ProductRepository {
     }
   }
 
-  async filter(minValue, maxValue, category) {
+  async filter(minValue, maxValue, category, title) {
     const query = {};
     if (minValue) {
       query.price = { $gte: parseFloat(minValue) };
     }
     if (maxValue) {
       query.price = { ...query.price, $lte: parseFloat(maxValue) };
+    }
+    if (title) {
+      query.title = new RegExp(title, "i");
     }
     if (category) {
       query.category = category;
@@ -62,7 +65,7 @@ export default class ProductRepository {
       // 1. check if product exists
       const existingProduct = await ProductModel.findById(productId);
       if (!existingProduct) {
-        throw new Error('Product not found');
+        throw new Error("Product not found");
       }
       // 2. check if user already rated the product
       const userReview = await ReviewModel.findOne({
